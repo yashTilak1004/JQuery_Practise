@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="C:\\Users\\Yashwanth.Akuthota\\Desktop\\jquery\\jquery-3.7.1.min.js"></script>
+    
+    <title>Form validation</title>
+</head>
+<body>
+    <h2>Form validation using JQuery</h2>
+    <form id="first_form" method="post" action="">  
+        <div>  
+          <label for="first_name"> Enter First Name: </label>  
+          <input type="text" id="first_name" name="first_name"></input>  
+        </div>  
+        <div>  
+          <label for="last_name"> Enter Last Name: </label>  
+          <input type="text" id="last_name" name="last_name"></input>  
+        </div>  
+        <div>  
+         <label for="last_name"> Enter Number: </label>  
+        <input type="text"  id="number" name="number">  
+        </div>  
+        <div>  
+          <label for="email"> Enter Email: </label>  
+          <input type="email" id="email" name="email"></input>  
+        </div>  
+        
+        <div>  
+          <label for="password"> Enter Password: </label>  
+          <input type="password" id="password" name="password"></input>  
+        </div>  
+        <div>  
+          <label for="password"> Confirm Password: </label>  
+          <input type="password" id="password" name="password"></input>  
+        </div>  
+        <div>  
+          <input type="submit" value="Submit" />  
+        </div>  
+    </form>  
+    
+
+    <script>
+        /*
+        $(document).ready(function(){
+            $('#first-form').submit(function(e){
+                e.preventDefault();
+                let f_name = $('#first_name').val();
+                let l_name = $('#last_name').val();
+                let email = $('#email').val();
+                let pwd = $('#password').val();  
+                let num = $('#number').val();
+
+                $(".error").remove(); //remove all error classes we add them as we validate the form
+
+                if(f_name.length<1)
+                {
+                    $('#f_name').after(`<span class='error'>Mandatory field.type content</span>`);
+                }
+                if(num.length<1)
+                {
+                    $('#number').after(`<span class='error'>Type a number.</span>`);
+                }
+                if(num.length>10)
+                {
+                    $('#number').after(`<span class='error'>Type the right number</span>`);
+                }
+                if (email.length < 1) 
+                {  
+                    $('#email').after('<span class="error">This field is required</span>');  
+                }
+                else
+                {
+                    var regEx = /^[A-Z0-9][A-Z0-9._%+-]{0,63}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;  
+                    var validEmail = regEx.test(email);  
+                    if (!validEmail) 
+                    {  
+                        $('#email').after('<span class="error">Enter a valid email</span>');  
+                    }  
+                }
+                if (password.length < 8) 
+                {  
+                    $('#password').after('<span class="error">Password must be at least 8 characters long</span>');  
+                }   
+            });
+        });*/
+
+        /*
+        $(document).ready(function () {  
+        $('#first_form').submit (function (e) {  
+            e.preventDefault();  
+            var first_name = $('#first_name').val();  
+            var last_name = $('#last_name').val();  
+            var email = $('#email').val();  
+            var password = $('#password').val();  
+        var number = $('#number').val();  
+        $(".error").remove();  
+        if (first_name.length < 1) {  
+            $('#first_name').after('<span class="error">This field is required</span>');  
+            }  
+        if (number.length < 1) {  
+            $('#number').after('<span class="error">This field is required</span>');  
+            }  
+            if (last_name.length < 1) {  
+            $('#last_name').after('<span class="error">This field is required</span>');  
+            }  
+            if (email.length < 1) {  
+            $('#email').after('<span class="error">This field is required</span>');  
+            } else {  
+            var regEx = /^[A-Z0-9][A-Z0-9._%+-]{0,63}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;  
+            var validEmail = regEx.test(email);  
+            if (!validEmail) {  
+                $('#email').after('<span class="error">Enter a valid email</span>');  
+            }  
+            }  
+            if (password.length < 8) {  
+            $('#password').after('<span class="error">Password must be at least 8 characters long</span>');  
+            }  
+        })});
+        */
+       
+        $(document).ready(function () {
+        $(".error").remove(); // Remove existing error messages on page load
+
+                // Validation function
+        function validateField(field, errorMessage, validationFunc) {
+            $(field).on('input', function () {
+                $(this).next('.error').remove(); // Remove any existing error messages
+                 if (!validationFunc($(this).val())) 
+                 {
+                    $(this).after('<span class="error">' + errorMessage + '</span>');
+                 }
+                    });
+                }
+
+                // Validation for each field
+                validateField('#first_name', 'This field is required', function (value) {
+                    return value.length > 5;
+                });
+
+                validateField('#last_name', 'This field is required', function (value) {
+                    return value.length > 0;
+                });
+
+                validateField('#number', 'This field is required', function (value) {
+                    return value.length > 0;
+                });
+
+                validateField('#email', 'This field is required', function (value) {
+                    return value.length > 0;
+                });
+
+                validateField('#email', 'Enter a valid email', function (value) {
+                    var regEx = /^[A-Z0-9][A-Z0-9._%+-]{0,63}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
+                    return regEx.test(value);
+                });
+
+                validateField('#password', 'Password must be at least 8 characters long', function (value) {
+                    return value.length >= 8;
+                });
+
+                // Optional: prevent form submission if there are errors
+                $('#first_form').submit(function (e) {
+                    $(".error").remove(); // Ensure no lingering errors on submit
+                    // Perform validation before submitting
+                    var isValid = true;
+                    $('#first_name, #last_name, #number, #email, #password').each(function() {
+                        if ($(this).next('.error').length > 0) {
+                            isValid = false;
+                        }
+                    });
+
+                    if (!isValid) {
+                        e.preventDefault(); // Prevent form submission if there are errors
+                    }
+                });
+            });
+
+        
+
+    </script>
+</body>
+</html>
